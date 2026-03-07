@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  -webkit-animation: App-logo-spin infinite 20s linear;
+          animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.btn {
+    white-space:normal !important;
+    word-wrap: break-word;
+    border: 0.5px solid silver;
+}
+
+.btn:hover, .btn:focus, .btn:active, .btn:hover:focus, .btn:active:focus, .btn:focus:active, .btn:focus:active:hover, .btn.active.focus.hover, .btn.active.focus, .btn.focus.active, .btn.focus, .btn.active, .open>.dropdown-toggle.btn {
+    background-color: #2ca089;
+}
+
+.sticky_style {
+    z-index: 10;
+    position: relative;
+    height: 100px;
+}
