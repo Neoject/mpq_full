@@ -37,7 +37,23 @@ $vas       = (int)($data['vas'] ?? 0);
 $ppi       = (int)($data['ppi'] ?? 0);
 $scores    = $data['scores'] ?? null;
 $bodyMap   = $data['bodyMap'] ?? null;
-$questionnaireType = trim((string)($data['questionnaire_type'] ?? $data['questionnaireType'] ?? 'mpq'));
+
+// Определяем тип анкеты (полная MPQ или короткая SF‑MPQ)
+// 1) Если явно передан questionnaire_type / questionnaireType — используем его.
+// 2) Иначе пытаемся определить по структуре данных:
+//    - наличие bodyMap / pri / pri_evaluative / pri_misc → считаем полной MPQ;
+//    - иначе — короткая форма SF‑MPQ.
+$questionnaireTypeRaw = $data['questionnaire_type'] ?? $data['questionnaireType'] ?? null;
+if ($questionnaireTypeRaw !== null && trim((string)$questionnaireTypeRaw) !== '') {
+    $questionnaireType = trim((string)$questionnaireTypeRaw);
+} else {
+    $isFullMpq = array_key_exists('bodyMap', $data)
+        || array_key_exists('pri', $data)
+        || array_key_exists('pri_evaluative', $data)
+        || array_key_exists('pri_misc', $data);
+
+    $questionnaireType = $isFullMpq ? 'mpq_full' : 'mpq_short';
+}
 
 // Нормализация JSON-полей: сохраняем только валидные структуры
 if (!is_array($scores)) {

@@ -16,10 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (function_exists('load_env_from_file')) {
-    load_env_from_file();
-}
-
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true);
 
@@ -35,32 +31,39 @@ if (!is_array($data)) {
 $login = (string)($data['login'] ?? '');
 $password = (string)($data['password'] ?? '');
 
-$expectedLogin = (string)(getenv('ADMIN_LOGIN') ?: '');
-$expectedPassword = (string)(getenv('ADMIN_PASSWORD') ?: '');
+try {
+    $pdo = get_pdo_connection();
+    $stmt = $pdo->prepare("
+        SELECT id, login, password_hash, role
+        FROM users
+        WHERE login = :login
+        LIMIT 1
+    ");
+    $stmt->execute([':login' => $login]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($expectedLogin === '' || $expectedPassword === '') {
+    if (!$user || !password_verify($password, $user['password_hash'])) {
+        http_response_code(401);
+        echo json_encode([
+            'success' => false,
+            'error'   => 'Неверный логин или пароль',
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+} catch (PDOException $e) {
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'error'   => 'Admin credentials are not configured',
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-// Constant-time compare to avoid timing leaks
-$ok = hash_equals($expectedLogin, $login) && hash_equals($expectedPassword, $password);
-
-if (!$ok) {
-    http_response_code(401);
-    echo json_encode([
-        'success' => false,
-        'error'   => 'Неверный логин или пароль',
+        'error'   => 'DB auth error: ' . $e->getMessage(),
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 session_regenerate_id(true);
 $_SESSION['admin_authenticated'] = true;
+$_SESSION['user_id'] = $user['id'] ?? null;
+$_SESSION['user_login'] = $user['login'] ?? null;
+$_SESSION['user_role'] = $user['role'] ?? null;
 
 echo json_encode([
     'success' => true,
