@@ -47,6 +47,95 @@ const ACCORDION_SECTIONS = [
         body: <>Опросник McGill Pain Questionnaire (MPQ, Melzack, 1975) включает 20 групп дескрипторов боли: сенсорные (1–10), аффективные (11–15), оценочные (16) и прочие (17–20). В каждой группе выбирается одно слово, наиболее подходящее к ощущению; ранг слова равен его позиции в группе. Сумма рангов даёт индекс оценки боли (PRI). Интенсивность боли в настоящий момент (PPI) оценивается по шкале 0–5.</> },
 ];
 
+// Константы для короткой формы SF-MPQ
+const PAIN_DESCRIPTORS_SHORT = [
+    { id: 1,  label: "Пульсирующая",         category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 2,  label: "Стреляющая",          category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 3,  label: "Режущая",          category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 4,  label: "Острая",             category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 5,  label: "Судорожная",          category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 6,  label: "Грызущая",           category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 7,  label: "Жгучая",       category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 8,  label: "Ноющая",            category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 9,  label: "Тяжелая",             category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 10, label: "Постоянная",            category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 11, label: "Раскалывающая",         category: "sensory", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 12, label: "Усталость от боли", category: "affective", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 13, label: "Тошнота от боли",         category: "affective", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 14, label: "Страх из-за боли",           category: "affective", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+    { id: 15, label: "Чувство наказания",   category: "affective", texts: ["Нет","Слабая","Умеренная","Сильная"] },
+];
+
+function StartPage() {
+    return (
+        <div className="app">
+            <div className="header">
+                <div className="header-eyebrow">NeurologyToolKit · Оценка боли</div>
+                <h1>Выбор формы опросника</h1>
+                <div className="header-sub">
+                    Выберите полную форму MPQ или короткую SF‑MPQ для заполнения анкеты или просмотра результатов.
+                </div>
+            </div>
+            <div className="content">
+                <div className="section" style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center" }}>
+                    <div
+                        style={{
+                            flex: "1 1 260px",
+                            maxWidth: 360,
+                            borderRadius: 16,
+                            border: "1px solid var(--border)",
+                            padding: 20,
+                            background: "var(--surface1)",
+                        }}
+                    >
+                        <div style={{ fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 8 }}>
+                            Полная форма
+                        </div>
+                        <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>McGill Pain Questionnaire (MPQ)</div>
+                        <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 16 }}>
+                            20 групп дескрипторов боли, карта тела, PRI + PPI + VAS. Подходит для детальной оценки.
+                        </div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                            <a href="/?form=full" className="export-btn">
+                                Заполнить анкету
+                            </a>
+                            <a href="/admin" className="export-btn" style={{ background: "var(--surface2)", color: "var(--text)" }}>
+                                Админка полной формы
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        style={{
+                            flex: "1 1 260px",
+                            maxWidth: 360,
+                            borderRadius: 16,
+                            border: "1px solid var(--border)",
+                            padding: 20,
+                            background: "var(--surface1)",
+                        }}
+                    >
+                        <div style={{ fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 8 }}>
+                            Короткая форма
+                        </div>
+                        <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>Short‑Form MPQ (SF‑MPQ)</div>
+                        <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 16 }}>
+                            15 параметров (физические и эмоциональные аспекты), суммарный балл, VAS и PPI. Быстрая оценка боли.
+                        </div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                            <a href="/short/" className="export-btn">
+                                Заполнить анкету
+                            </a>
+                            <a href="/short/admin" className="export-btn" style={{ background: "var(--surface2)", color: "var(--text)" }}>
+                                Админка короткой формы
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function mcgillMaxPRI() {
     return MCGILL_CATEGORIES.reduce((s, c) => s + c.words.length, 0);
 }
@@ -414,6 +503,7 @@ function McGillCategoryRow({ category, value, onChange }) {
 function Admin() {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
+    const [adminMode, setAdminMode] = useState("full"); // 'full' | 'short'
 
     const [authChecking, setAuthChecking] = useState(true);
     const [isAuthed, setIsAuthed] = useState(false);
@@ -432,6 +522,10 @@ function Admin() {
 
     const exportSelectedToPDF = async () => {
         if (!selected || selected.error) return;
+
+        if (adminMode === "short") {
+            return exportSelectedToPDFShort();
+        }
 
         const fullName = selected.full_name || "Без имени";
         const createdAt = selected.created_at || "";
@@ -543,12 +637,94 @@ function Admin() {
         pdfMake.createPdf(docDefinition).download(`MPQ_${safeName || "Patient"}_${selected.id}.pdf`);
     };
 
+    const exportSelectedToPDFShort = () => {
+        if (!selected || selected.error) return;
+
+        const fullName = selected.full_name || "Без имени";
+        const createdAt = selected.created_at || "";
+        const tableBody = [
+            ["№", "Параметр", "Категория", "Балл", "Уровень"],
+            ...PAIN_DESCRIPTORS_SHORT.map((d) => {
+                const val = (selected.pain_descriptors && selected.pain_descriptors[d.id]) || 0;
+                const cfg = LEVEL_CONFIG[val];
+                return [
+                    d.id.toString(),
+                    d.label,
+                    d.category === "sensory" ? "Физическое" : "Эмоциональное",
+                    val.toString(),
+                    cfg.label,
+                ];
+            }),
+        ];
+
+        const docDefinition = {
+            content: [
+                { text: "Анкета боли", style: "header" },
+                {
+                    text: `Пациент: ${fullName}`,
+                    style: "subheader",
+                    margin: [0, 8, 0, 0],
+                },
+                {
+                    text: `Дата заполнения: ${createdAt}`,
+                    style: "subheader",
+                    margin: [0, 0, 0, 12],
+                },
+                { text: "Итоговые показатели", style: "sectionTitle" },
+                {
+                    ul: [
+                        `Общий балл: ${selected.total_score} / 45`,
+                        `Физическое влияние: ${selected.sensory_score} / 33`,
+                        `Эмоциональное влияние: ${selected.affective_score} / 12`,
+                        `Визуальная шкала (VAS): ${selected.vas_score} / 10`,
+                        `Интенсивность боли (PPI): ${selected.ppi_score} / 5`,
+                    ],
+                    margin: [0, 4, 0, 10],
+                },
+                { text: "Детальные результаты", style: "sectionTitle", margin: [0, 6, 0, 4] },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ["auto", "*", "auto", "auto", "auto"],
+                        body: tableBody,
+                    },
+                    layout: "lightHorizontalLines",
+                    fontSize: 9,
+                },
+            ],
+            defaultStyle: {
+                font: "Roboto",
+                fontSize: 11,
+            },
+            styles: {
+                header: {
+                    fontSize: 16,
+                    bold: true,
+                    margin: [0, 0, 0, 4],
+                },
+                subheader: {
+                    fontSize: 10,
+                    color: "#555555",
+                },
+                sectionTitle: {
+                    fontSize: 13,
+                    bold: true,
+                    margin: [0, 8, 0, 2],
+                },
+            },
+        };
+
+        const safeName = fullName.replace(/\s+/g, "_");
+        pdfMake.createPdf(docDefinition).download(`SF-MPQ_${safeName || "Patient"}_${selected.id}.pdf`);
+    };
+
     const deleteSelected = async () => {
         if (!selected || selected.error || deleteLoading) return;
         if (!window.confirm("Удалить этот результат?")) return;
 
         setDeleteLoading(true);
         try {
+            const formParam = adminMode === "short" ? "short" : "full";
             const res = await fetch("/backend/delete_assessment.php", {
                 method: "POST",
                 headers: {
@@ -556,7 +732,7 @@ function Admin() {
                     Accept: "application/json",
                 },
                 credentials: "include",
-                body: JSON.stringify({ id: selected.id }),
+                body: JSON.stringify({ id: selected.id, form: formParam }),
             });
             const data = await res.json();
             if (!res.ok || !data.success) {
@@ -593,8 +769,10 @@ function Admin() {
     const loadAssessments = async () => {
         setListLoading(true);
         setListError(null);
+        setAssessments([]); // Очищаем список перед загрузкой
         try {
-            const res = await fetch("/backend/list_assessments.php", {
+            const formParam = adminMode === "short" ? "short" : "full";
+            const res = await fetch(`/backend/list_assessments.php?form=${formParam}`, {
                 headers: { Accept: "application/json" },
             });
             const data = await res.json();
@@ -604,6 +782,7 @@ function Admin() {
             setAssessments(data.items || []);
         } catch (e) {
             setListError(e.message);
+            setAssessments([]); // Очищаем список при ошибке
         } finally {
             setListLoading(false);
         }
@@ -613,7 +792,8 @@ function Admin() {
         setDetailLoading(true);
         setSelected(null);
         try {
-            const res = await fetch(`/backend/get_assessment.php?id=${id}`, {
+            const formParam = adminMode === "short" ? "short" : "full";
+            const res = await fetch(`/backend/get_assessment.php?id=${id}&form=${formParam}`, {
                 headers: { Accept: "application/json" },
             });
             const data = await res.json();
@@ -689,10 +869,11 @@ function Admin() {
 
     useEffect(() => {
         if (isAuthed) {
+            setSelected(null); // Сбрасываем выбранную запись при переключении режима
             loadAssessments();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAuthed]);
+    }, [isAuthed, adminMode]);
 
     if (!isAuthed) {
         return (
@@ -700,6 +881,9 @@ function Admin() {
                 <div className="header">
                     <div className="header-eyebrow">NeurologyToolKit · Админка</div>
                     <h1>Авторизация администратора</h1>
+                    <div style={{ marginTop: 8, fontSize: 13, color: "var(--muted)" }}>
+                        Выберите нужную форму после входа: полную MPQ или короткую SF‑MPQ.
+                    </div>
                 </div>
                 <div className="content">
                     <div className="section" style={{ maxWidth: 420, margin: "0 auto" }}>
@@ -775,6 +959,36 @@ function Admin() {
                 <h1>
                     <a href={'/'}>Анкета боли</a>
                 </h1>
+                <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <button
+                        type="button"
+                        className="export-btn"
+                        onClick={() => setAdminMode("full")}
+                        style={{
+                            padding: "6px 10px",
+                            fontSize: 13,
+                            background: adminMode === "full" ? "#1d4ed8" : "var(--surface1)",
+                            borderColor: adminMode === "full" ? "#1d4ed8" : "var(--border)",
+                            color: adminMode === "full" ? "#ffffff" : "var(--text)",
+                        }}
+                    >
+                        Полная MPQ (админка)
+                    </button>
+                    <button
+                        type="button"
+                        className="export-btn"
+                        onClick={() => setAdminMode("short")}
+                        style={{
+                            padding: "6px 10px",
+                            fontSize: 13,
+                            background: adminMode === "short" ? "#1d4ed8" : "var(--surface1)",
+                            borderColor: adminMode === "short" ? "#1d4ed8" : "var(--border)",
+                            color: adminMode === "short" ? "#ffffff" : "var(--text)",
+                        }}
+                    >
+                        Короткая SF‑MPQ (админка)
+                    </button>
+                </div>
             </div>
             <div className="content" style={{ width: '80vw', maxWidth: 'unset' }}>
             {/*    <div className="section">*/}
@@ -877,7 +1091,7 @@ function Admin() {
                                             }}
                                         >
                                             <div>
-                                                <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 8 }}>{name}</div>
+                                                <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 8, color: '#ffffff' }}>{name}</div>
                                                 <div style={{ fontSize: 12, color: "var(--muted)" }}>{labelDate}</div>
                                             </div>
                                             <div
@@ -890,7 +1104,7 @@ function Admin() {
                                                     color: "#3b82f6",
                                                 }}
                                             >
-                                                PRI {a.total_score ?? a.pri ?? "—"}
+                                                {adminMode === "short" ? `${a.total_score} / 45` : `PRI ${a.total_score ?? a.pri ?? "—"}`}
                                             </div>
                                         </button>
                                     );
@@ -959,50 +1173,97 @@ function Admin() {
                                         </div>
 
                                         <div className="summary-grid" style={{ marginBottom: 16 }}>
-                                            {[
-                                                ["PRI", selected.total_score ?? selected.pri, mcgillMaxPRI()],
-                                                ["Сенсор.", selected.sensory_score ?? selected.pri_sensory, MCGILL_CATEGORIES.filter(c => c.type === "sensory").reduce((s, c) => s + c.words.length, 0)],
-                                                ["Аффект.", selected.affective_score ?? selected.pri_affective, MCGILL_CATEGORIES.filter(c => c.type === "affective").reduce((s, c) => s + c.words.length, 0)],
-                                                ["Оценка", selected.pri_evaluative ?? 0, MCGILL_CATEGORIES.find(c => c.type === "evaluative")?.words.length ?? 0],
-                                                ["Прочие", selected.pri_misc ?? 0, MCGILL_CATEGORIES.filter(c => c.type === "miscellaneous").reduce((s, c) => s + c.words.length, 0)],
-                                                ["PPI", selected.ppi_score ?? selected.ppi, 5],
-                                                ...(selected.vas_score != null ? [["VAS", selected.vas_score, 10]] : []),
-                                            ].map(([l, v, m]) => (
-                                                <div key={l} className="stat-card">
-                                                    <div className="stat-label">{l}</div>
-                                                    <div className="stat-val">
-                                                        {v ?? "—"}
-                                                        {m != null && <span>/{m}</span>}
+                                            {adminMode === "short" ? (
+                                                [
+                                                    ["Итого", selected.total_score, 45],
+                                                    ["Физич.", selected.sensory_score, 33],
+                                                    ["Эмоц.", selected.affective_score, 12],
+                                                    ["VAS", selected.vas_score, 10],
+                                                    ["PPI", selected.ppi_score, 5],
+                                                ].map(([l, v, m]) => (
+                                                    <div key={l} className="stat-card">
+                                                        <div className="stat-label">{l}</div>
+                                                        <div className="stat-val">
+                                                            {v}
+                                                            <span>/{m}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                ))
+                                            ) : (
+                                                [
+                                                    ["PRI", selected.total_score ?? selected.pri, mcgillMaxPRI()],
+                                                    ["Сенсор.", selected.sensory_score ?? selected.pri_sensory, MCGILL_CATEGORIES.filter(c => c.type === "sensory").reduce((s, c) => s + c.words.length, 0)],
+                                                    ["Аффект.", selected.affective_score ?? selected.pri_affective, MCGILL_CATEGORIES.filter(c => c.type === "affective").reduce((s, c) => s + c.words.length, 0)],
+                                                    ["Оценка", selected.pri_evaluative ?? 0, MCGILL_CATEGORIES.find(c => c.type === "evaluative")?.words.length ?? 0],
+                                                    ["Прочие", selected.pri_misc ?? 0, MCGILL_CATEGORIES.filter(c => c.type === "miscellaneous").reduce((s, c) => s + c.words.length, 0)],
+                                                    ["PPI", selected.ppi_score ?? selected.ppi, 5],
+                                                    ...(selected.vas_score != null ? [["VAS", selected.vas_score, 10]] : []),
+                                                ].map(([l, v, m]) => (
+                                                    <div key={l} className="stat-card">
+                                                        <div className="stat-label">{l}</div>
+                                                        <div className="stat-val">
+                                                            {v ?? "—"}
+                                                            {m != null && <span>/{m}</span>}
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            )}
                                         </div>
 
-                                        {Array.isArray(MCGILL_CATEGORIES) && selected.pain_descriptors && (
-                                            <div style={{ marginTop: 8 }}>
-                                                <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Выбранные дескрипторы</div>
-                                                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                                                    {MCGILL_CATEGORIES.map((c) => {
-                                                        const rank = selected.pain_descriptors[c.id] || 0;
-                                                        const word = rank > 0 ? c.words[rank - 1] : null;
-                                                        if (!word) return null;
-                                                        return (
-                                                            <div
-                                                                key={c.id}
-                                                                style={{
-                                                                    padding: "6px 8px",
-                                                                    borderRadius: 999,
-                                                                    border: "1px solid var(--border)",
-                                                                    background: "var(--surface2)",
-                                                                    fontSize: 11,
-                                                                }}
-                                                            >
-                                                                {c.id}. {word} (ранг {rank})
-                                                            </div>
-                                                        );
-                                                    })}
+                                        {adminMode === "short" ? (
+                                            Array.isArray(PAIN_DESCRIPTORS_SHORT) && selected.pain_descriptors && (
+                                                <div style={{ marginTop: 8 }}>
+                                                    <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Карта боли</div>
+                                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                                                        {PAIN_DESCRIPTORS_SHORT.map((d) => {
+                                                            const val = (selected.pain_descriptors && selected.pain_descriptors[d.id]) || 0;
+                                                            const cfg = LEVEL_CONFIG[val];
+                                                            return (
+                                                                <div
+                                                                    key={d.id}
+                                                                    style={{
+                                                                        padding: "6px 8px",
+                                                                        borderRadius: 999,
+                                                                        border: `1px solid ${cfg.border}`,
+                                                                        background: cfg.bg,
+                                                                        fontSize: 11,
+                                                                        color: cfg.color,
+                                                                    }}
+                                                                >
+                                                                    {d.id}. {d.label}: {cfg.label}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )
+                                        ) : (
+                                            Array.isArray(MCGILL_CATEGORIES) && selected.pain_descriptors && (
+                                                <div style={{ marginTop: 8 }}>
+                                                    <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Выбранные дескрипторы</div>
+                                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                                                        {MCGILL_CATEGORIES.map((c) => {
+                                                            const rank = selected.pain_descriptors[c.id] || 0;
+                                                            const word = rank > 0 ? c.words[rank - 1] : null;
+                                                            if (!word) return null;
+                                                            return (
+                                                                <div
+                                                                    key={c.id}
+                                                                    style={{
+                                                                        padding: "6px 8px",
+                                                                        borderRadius: 999,
+                                                                        border: "1px solid var(--border)",
+                                                                        background: "var(--surface2)",
+                                                                        fontSize: 11,
+                                                                    }}
+                                                                >
+                                                                    {c.id}. {word} (ранг {rank})
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )
                                         )}
                                         {selected.body_map && (selected.body_map.front?.length > 0 || selected.body_map.back?.length > 0) && (
                                             <div style={{ marginTop: 16 }}>
@@ -1075,6 +1336,11 @@ function Admin() {
 
 export default function App() {
     const isAdmin = typeof window !== "undefined" && window.location.pathname.startsWith("/admin");
+
+    if (isAdmin) {
+        return <Admin />;
+    }
+
     const [patientName, setPatientName] = useState("");
     const [scores, setScores] = useState(Object.fromEntries(MCGILL_CATEGORIES.map(c => [c.id, 0])));
     const [vas, setVas] = useState(0);

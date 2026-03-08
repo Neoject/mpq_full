@@ -74,10 +74,15 @@ try {
     $pdo = get_pdo_connection();
     $pdo->beginTransaction();
 
+    // Определяем, в какие таблицы сохранять
+    $isShort = ($questionnaireType === 'mpq_short' || $questionnaireType === 'short');
+    $assessmentsTable = $isShort ? 'm_assessments' : 'assessments';
+    $patientsTable = $isShort ? 'm_patients' : 'patients';
+
     $patientId = null;
     if ($fullName !== '') {
         $stmt = $pdo->prepare("
-            INSERT INTO patients (full_name)
+            INSERT INTO {$patientsTable} (full_name)
             VALUES (:full_name)
         ");
         $stmt->execute([':full_name' => $fullName]);
@@ -85,7 +90,7 @@ try {
     }
 
     $stmt = $pdo->prepare("
-        INSERT INTO assessments (
+        INSERT INTO {$assessmentsTable} (
             patient_id,
             total_score,
             sensory_score,

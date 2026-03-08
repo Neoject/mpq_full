@@ -36,9 +36,14 @@ if ($id <= 0) {
     exit;
 }
 
+// Определяем тип формы из параметра
+$form = isset($data['form']) ? trim($data['form']) : 'full';
+$isShort = ($form === 'short');
+$assessmentsTable = $isShort ? 'm_assessments' : 'assessments';
+
 try {
     $pdo = get_pdo_connection();
-    $stmt = $pdo->prepare("DELETE FROM assessments WHERE id = :id");
+    $stmt = $pdo->prepare("DELETE FROM {$assessmentsTable} WHERE id = :id");
     $stmt->execute([':id' => $id]);
 
     echo json_encode([
